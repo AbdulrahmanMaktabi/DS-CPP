@@ -17,7 +17,7 @@ public:
 		cout << length << endl;
 	}
 	bool isEmpty() {
-		return head == NULL ? true : false;
+		return head == NULL;
 	}
 	void insertFirst(int value) {
 		node* new_node = new node;
@@ -66,6 +66,77 @@ public:
 			}
 		}
 	}
+	void deleteBeg() {
+		if (head == NULL) {
+			cout << "LinkedList Is Empty!" << endl;
+			return;
+		}
+		node* curr_node = head;
+		head = curr_node->next;
+		delete(curr_node);
+		length--;
+	}
+
+	void deleteLast() {
+		if (head == NULL) {
+			cout << "LinkedList Is Empty!" << endl;
+			return;
+		}
+		node* curr_node, * prev_node;
+		curr_node = head->next;
+		prev_node = head;
+		while (curr_node != tail) {
+			prev_node = curr_node;
+			curr_node = curr_node->next;
+		}
+		prev_node->next = NULL;
+		tail = prev_node;
+		delete(curr_node);
+		length--;
+	}
+
+	void deleteAtPos(int pos) {
+		if (head == NULL) 
+			cout << "Linked List Is Empty!" << endl;
+		else if (pos < 0 || pos > length)
+			cout << "Error In Position!" << endl;
+		else {
+			if (pos == 0)
+				deleteBeg();
+			else if (pos == length)
+				deleteLast();
+			else {
+				node* curr_node, * prev_node;
+				curr_node = head->next;
+				prev_node = head;
+				for (int i = 1; i < pos; i++) {
+					prev_node = curr_node;
+					curr_node = curr_node->next;
+				}
+				prev_node->next = curr_node->next;
+				delete (curr_node);
+				length--;
+			}
+		}
+	}
+	void reverse() {
+		if (head == NULL) {
+			cout << "linkedLIst Is Null" << endl;
+			return;
+		}
+		node* prv, * curr, * next;
+		prv = NULL;
+		curr = head;
+		next = curr->next;
+		while (curr != NULL) {
+			next = curr->next;
+			curr->next = prv;
+			prv = curr;
+			curr = next;
+		}
+		head = prv;
+	}
+
 	void display() {
 		if (head == NULL)
 			cout << "LikedList Is Empty!" << endl;
@@ -78,8 +149,15 @@ public:
 			cout << endl;
 		}
 	}
+	void printHead() {
+		cout << head->item << endl;
+	}
+	void printTail() {
+		cout << tail->item << endl;
+	}
 };
 int main() {
+
 	LinkedList test;
 	test.insertFirst(3);
 	test.insertFirst(4);
@@ -88,12 +166,7 @@ int main() {
 	test.insertLast(17);
 	test.insertLast(16);
 	test.display();
-	test.insertFirst(1);
+	test.reverse();
 	test.display();
-	test.insertLast(99);
-	test.display();
-	test.insertAtPos(4 , 222);
-	test.display();
-
 	return 0;
 }
