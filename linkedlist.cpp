@@ -1,108 +1,99 @@
 #include <iostream>
 using namespace std;
 
-struct node {
-	int item;
-	node* next;
+class LinkedList {
+	struct node {
+		int item;
+		node* next;
+	};
+	node* head, * tail;
+	int length;
+public:
+	LinkedList() {
+		head = tail = NULL;
+		length = 0;
+	}
+	void printLength() {
+		cout << length << endl;
+	}
+	bool isEmpty() {
+		return head == NULL ? true : false;
+	}
+	void insertFirst(int value) {
+		node* new_node = new node;
+		new_node->item = value;
+		length++;
+		if (head == NULL) {
+			new_node->next = NULL;
+			tail = head = new_node;
+			return;
+		}
+		new_node->next = head;
+		head = new_node;
+	}
+	void insertLast(int value) {
+		node* new_node = new node;
+		new_node->item = value;
+		if (head == NULL) {
+			head = tail = new_node;
+			new_node->next = NULL;
+			return;
+		}
+		tail->next = new_node;
+		tail = new_node;
+		new_node->next = NULL;
+		length++;
+	}
+	void insertAtPos(int pos , int value) {
+		if (pos < 0 || pos > length) {
+			cout << "Error In Postition! " << endl;
+		}
+		else {
+			node* new_node = new node;
+			new_node->item = value;
+			if (pos == 0)
+				insertFirst(value);
+			else if (pos == length)
+				insertLast(value);
+			else {
+				node* curr_node = head;
+				for (int i = 1; i < pos; i++) {
+					curr_node = curr_node->next;
+				}
+				new_node->next = curr_node->next;
+				curr_node->next = new_node;
+				length++;
+			}
+		}
+	}
+	void display() {
+		if (head == NULL)
+			cout << "LikedList Is Empty!" << endl;
+		else {
+			node* curr_node = head;
+			while (curr_node != NULL) {
+				cout << curr_node->item << "\t";
+				curr_node = curr_node->next;
+			}
+			cout << endl;
+		}
+	}
 };
-
-node* head = NULL;
-
-void insert_node(int  value);
-void insert_node_beg(int  value);
-void delete_node(int  value);
-void delete_node_beg();
-void display_node();
-
 int main() {
+	LinkedList test;
+	test.insertFirst(3);
+	test.insertFirst(4);
+	test.insertLast(19);
+	test.insertLast(18);
+	test.insertLast(17);
+	test.insertLast(16);
+	test.display();
+	test.insertFirst(1);
+	test.display();
+	test.insertLast(99);
+	test.display();
+	test.insertAtPos(4 , 222);
+	test.display();
 
-	insert_node(1);
-	insert_node(3);
-	insert_node(4);
-	display_node();
-	insert_node_beg(4);
-	display_node();
-	delete_node(3);
-	display_node();
-	delete_node_beg();
-	display_node();
 	return 0;
-}
-
-void insert_node(int  value) {
-	node* new_node = new node;
-	if (head == NULL) {
-		cout << "The linked list is empty\nThe item will be the first item!" << endl;
-		head = new_node;
-		new_node->item = value;
-		new_node->next = NULL;
-		cout << "the item has been added sucssfuly!" << endl;
-		return;
-	}
-	node* tail = new node;
-	tail = head;
-	while (tail->next != NULL) {
-		tail = tail->next;
-	}
-	tail->next = new_node;
-	new_node->item = value;
-	new_node->next = NULL;
-	cout << "the item has been added sucssfuly!" << endl;
-}
-
-void insert_node_beg(int value) {
-	node* new_node = new node;
-	if (head == NULL) {
-		cout << "The liked list is empty!" << endl;
-		head = new_node;
-		new_node->item = value;
-		new_node->next = NULL;
-		cout << "the item has been added sucssfuly!" << endl;
-		return;
-	}
-	new_node->item = value;
-	new_node->next = head;
-	head = new_node;
-}
-
-void delete_node(int  value){
-	if (head == NULL) {
-		cout << "the linked list is empty!" << endl;
-		return;
-	}
-	node* current_node, * before_node;
-	current_node = before_node = head;
-
-	while (current_node->item != value) {
-		before_node = current_node;
-		current_node = current_node->next;
-	}
-	before_node->next = current_node->next;
-	delete(current_node);
-}
-
-void delete_node_beg(){
-	if (head == NULL) {
-		cout << "the linked list is empty!" << endl;
-		return;
-	}
-	node* delete_this_node = new node;
-	delete_this_node = head;
-	head = delete_this_node->next;
-	delete(delete_this_node);
-}
-
-void display_node() {
-	if (head == NULL) {
-		cout << "the linked list is empty!" << endl;
-		cout << "there is no thing to show!" << endl;
-		return;
-	}
-	node* current_node, * tail = new node;
-	current_node = head;
-	while (current_node != NULL) {
-		cout << current_node->item << "\t";
-		current_node = current_node->next;
-	}
-	cout << endl;
 }
